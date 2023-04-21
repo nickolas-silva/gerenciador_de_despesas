@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:gd_app/view/colors.dart';
+import 'package:gd_app/view/drawer.dart';
 
 class ViewHome extends StatefulWidget {
   const ViewHome({super.key});
@@ -11,16 +13,27 @@ class ViewHome extends StatefulWidget {
 
 class _ViewHomeState extends State<ViewHome> {
 
-  List<Widget> listTabs = [
-    const Tab(
-      icon: Icon(Icons.home),
-      text: "Home",
-    ),
-
-
-  ];
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      drawer: const DrawerItens(),
+      appBar: AppBar(
+        elevation: 5,
+        backgroundColor: roxoClaro,
+        title: const Text(
+          'Home',
+          style: TextStyle(
+            color: roxoForte,
+            fontSize: 20,
+            fontWeight: FontWeight.w900
+          ),
+        ),
+        centerTitle: true,
+
+      ),
+      body: Container(
+        
+      ),
+    );
   }
 }
