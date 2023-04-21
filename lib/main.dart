@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'pages/home.dart';
+import 'view/pages/home.dart';
 
 void main(){
   runApp(MyApp());
