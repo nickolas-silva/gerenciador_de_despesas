@@ -17,15 +17,15 @@ class DrawerItens extends StatelessWidget {
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
-              UserAccountsDrawerHeader(
-                arrowColor: Colors.white,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: Image.asset().image,
-                    fit: BoxFit.cover
-                  )
-                ),
-                accountName: , accountEmail: )
+              //UserAccountsDrawerHeader(
+                // arrowColor: Colors.white,
+                // decoration: BoxDecoration(
+                //   image: DecorationImage(
+                //     image: Image.asset().image,
+                //     fit: BoxFit.cover
+                //   )
+                // ),
+                //accountName: , accountEmail: )
             ]
           ),
         ),
