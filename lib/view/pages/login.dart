@@ -32,13 +32,12 @@ class _ViewLoginState extends State<ViewLogin> {
     return Scaffold(
       backgroundColor: roxoForte,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 24),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
-            
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(height: 64,),
+              const SizedBox(height: 172,),
 
               WidgetText(
                 text: 'BEM VINDO(A)',
@@ -74,12 +73,81 @@ class _ViewLoginState extends State<ViewLogin> {
                 icon: Icons.password,
                 hint: 'Digite sua senha',
                 validator: Validatorless.min(6, "Digite no minimo 6 caracteres"),
+              ),
+
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {},
+                  child: WidgetText(
+                    text: 'Esqueceu a Senha?',
+                    color: branco,
+                    size: 16,
+                    weight: FontWeight.w700,
+
+                  )
+                ),
+              ),
+
+              const SizedBox(height: 20,),
+
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: roxoClaro,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)
+                  )
+                  
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/home');
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    WidgetText(
+                      text: 'Logar',
+                      color: Colors.black,
+                      size: 25,
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      weight: FontWeight.w700,
+                    )
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 36,),
+
+              WidgetText(
+                text: 'Não tem uma conta?',
+                color: Colors.white,
+                size: 20,
+                weight: FontWeight.w700,
+              ),
+
+              TextButton(
+              onPressed: () {
+               //Rota tela de cadastro
+
+              },
+              child: Text(
+                'Registre-se',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                  //fontFamily: 'JetBrains Mono',
+                  decoration: TextDecoration.underline,
+                ),
               )
+            )
 
             ],
           ),
+          
         ),
+        
       ),
+      
     );
   }
 }
