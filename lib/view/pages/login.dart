@@ -38,7 +38,7 @@ class _ViewLoginState extends State<ViewLogin> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 172,),
-
+              
               WidgetText(
                 text: 'BEM VINDO(A)',
                 color: azul,

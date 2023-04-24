@@ -3,6 +3,9 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:gd_app/view/colors.dart';
 import 'package:gd_app/view/drawer.dart';
+import 'package:gd_app/view/pages/despesas.dart';
+import 'package:gd_app/view/pages/resumo.dart';
+import 'package:gd_app/widgets/widgettext.dart';
 
 class ViewHome extends StatefulWidget {
   const ViewHome({super.key});
@@ -13,27 +16,49 @@ class ViewHome extends StatefulWidget {
 
 class _ViewHomeState extends State<ViewHome> {
 
+  List<Widget> listTabs = [
+    Tab(
+      icon: Icon(Icons.home),
+      text: 'HOME',
+    ),
+
+    Tab(
+      icon: Icon(Icons.escalator_rounded),
+      text: 'DESPESAS',
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: const DrawerItens(),
-      appBar: AppBar(
-        elevation: 5,
-        backgroundColor: roxoClaro,
-        title: const Text(
-          'Home',
-          style: TextStyle(
-            color: roxoForte,
-            fontSize: 20,
-            fontWeight: FontWeight.w900
+    return DefaultTabController(
+      length: listTabs.length,
+      child: Scaffold(
+        drawer: const DrawerItens(),
+        appBar: AppBar(
+          backgroundColor: roxoForte,
+          elevation: 5,
+          title: WidgetText(
+            text: 'HOME',
+            color: roxoClaro,
+            size: 20,
+            weight: FontWeight.w900,
+
+          ),
+          centerTitle: true,
+          bottom: TabBar(
+            indicatorColor: azul,
+            indicatorWeight: 5,
+            labelColor: azul,
+            tabs: listTabs,
           ),
         ),
-        centerTitle: true,
-
-      ),
-      body: Container(
-        
-      ),
+        body: TabBarView(
+          children: [
+            TabResumo(),
+            TabDespesa()
+          ],
+        ),
+      )
     );
   }
 }

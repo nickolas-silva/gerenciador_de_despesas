@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:gd_app/view/colors.dart';
 
 class DrawerItens extends StatelessWidget {
   const DrawerItens({Key? key,}) : super(key: key);
@@ -16,16 +17,26 @@ class DrawerItens extends StatelessWidget {
           padding: EdgeInsets.only(top: 0),
           child: ListView(
             padding: EdgeInsets.zero,
-            children: <Widget>[
-              //UserAccountsDrawerHeader(
-                // arrowColor: Colors.white,
-                // decoration: BoxDecoration(
-                //   image: DecorationImage(
-                //     image: Image.asset().image,
-                //     fit: BoxFit.cover
-                //   )
-                // ),
-                //accountName: , accountEmail: )
+            children: [
+              const SizedBox(height: 100,),
+              ListTile(
+                dense: true,
+                    leading:
+                    Icon(Icons.contacts_outlined, color: branco),
+                    title: const Text(
+                      "Perfil",
+                      style: TextStyle(
+                          fontFamily: 'nunito',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w900,
+                          color: roxoClaro),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                ),
+                
+              
             ]
           ),
         ),
