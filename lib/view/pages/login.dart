@@ -32,7 +32,7 @@ class _ViewLoginState extends State<ViewLogin> {
     return Scaffold(
       backgroundColor: roxoForte,
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
