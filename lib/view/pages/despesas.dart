@@ -16,7 +16,7 @@ class _TabDespesaState extends State<TabDespesa> {
     return Scaffold(
       backgroundColor: branco,
       body: Container(
-        
+        padding: const EdgeInsets.symmetric(horizontal: 24),
       ),
     );
   }

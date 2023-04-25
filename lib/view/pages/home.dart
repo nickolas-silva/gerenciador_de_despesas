@@ -15,13 +15,11 @@ class ViewHome extends StatefulWidget {
 }
 
 class _ViewHomeState extends State<ViewHome> {
-
   List<Widget> listTabs = [
     Tab(
       icon: Icon(Icons.home),
       text: 'HOME',
     ),
-
     Tab(
       icon: Icon(Icons.escalator_rounded),
       text: 'DESPESAS',
@@ -31,34 +29,29 @@ class _ViewHomeState extends State<ViewHome> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: listTabs.length,
-      child: Scaffold(
-        drawer: const DrawerItens(),
-        appBar: AppBar(
-          backgroundColor: roxoForte,
-          elevation: 5,
-          title: WidgetText(
-            text: 'HOME',
-            color: roxoClaro,
-            size: 20,
-            weight: FontWeight.w900,
-
+        length: listTabs.length,
+        child: Scaffold(
+          drawer: const DrawerItens(),
+          appBar: AppBar(
+            backgroundColor: roxoForte,
+            elevation: 5,
+            title: WidgetText(
+              text: 'HOME',
+              color: roxoClaro,
+              size: 20,
+              weight: FontWeight.w900,
+            ),
+            centerTitle: true,
+            bottom: TabBar(
+              indicatorColor: azul,
+              indicatorWeight: 5,
+              labelColor: azul,
+              tabs: listTabs,
+            ),
           ),
-          centerTitle: true,
-          bottom: TabBar(
-            indicatorColor: azul,
-            indicatorWeight: 5,
-            labelColor: azul,
-            tabs: listTabs,
+          body: TabBarView(
+            children: [TabResumo(), TabDespesa()],
           ),
-        ),
-        body: TabBarView(
-          children: [
-            TabResumo(),
-            TabDespesa()
-          ],
-        ),
-      )
-    );
+        ));
   }
 }
