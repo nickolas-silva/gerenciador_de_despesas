@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:gd_app/view/colors.dart';
 import 'package:gd_app/widgets/ChartContainer.dart';
 import 'package:gd_app/widgets/InfoContainer.dart';
+import 'package:gd_app/widgets/widgettext.dart';
 
 class TabResumo extends StatefulWidget {
   const TabResumo({super.key});
@@ -30,6 +31,7 @@ class _ViewResumoState extends State<TabResumo> {
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.w800,
+                  fontFamily: 'Poppins'
                 ),
               ),
               InfoContainer(),
@@ -38,9 +40,11 @@ class _ViewResumoState extends State<TabResumo> {
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.w800,
+                  fontFamily: 'Poppins'
                 ),
               ),
               ChartContainer(),
+              
             ],
           ),
         ));
