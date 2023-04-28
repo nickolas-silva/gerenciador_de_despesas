@@ -35,13 +35,13 @@ class _ViewHomeState extends State<ViewHome> {
           appBar: AppBar(
             backgroundColor: roxoForte,
             elevation: 5,
-            title: const Text('Home', style: TextStyle(fontFamily: 'Poppins', color: roxoClaro, fontSize: 20, fontWeight: FontWeight.w900),),
-            // WidgetText(
-            //   text: 'HOME',
-            //   color: roxoClaro,
-            //   size: 20,
-            //   weight: FontWeight.w900,
-            // ),
+            //title: const Text('Home', style: TextStyle( color: roxoClaro, fontSize: 20, fontWeight: FontWeight.w900),),
+            title: WidgetText(
+              text: 'GD_app',
+              color: roxoClaro,
+              size: 20,
+              weight: FontWeight.w900,
+            ),
             centerTitle: true,
             bottom: TabBar(
               indicatorColor: azul,

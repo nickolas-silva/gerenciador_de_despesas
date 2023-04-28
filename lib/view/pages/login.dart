@@ -135,8 +135,9 @@ class _ViewLoginState extends State<ViewLogin> {
                 style: TextStyle(
                   fontSize: 18,
                   color: Colors.white,
-                  //fontFamily: 'JetBrains Mono',
+                  fontFamily: 'Poppins',
                   decoration: TextDecoration.underline,
+                  fontWeight: FontWeight.w700
                 ),
               )
             )
