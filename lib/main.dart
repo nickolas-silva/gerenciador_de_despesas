@@ -4,8 +4,8 @@ import 'package:gd_app/view/pages/login.dart';
 
 import 'view/pages/home.dart';
 
-void main(){
-  runApp(MyApp());
+void main() {
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -15,11 +15,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'gd_app', 
+      title: 'gd_app',
       initialRoute: '/login',
       routes: {
-        '/login' :(context) => ViewLogin(),
-        '/home' :(context) => ViewHome(),
+        '/login': (context) => ViewLogin(),
+        '/home': (context) => ViewHome(),
       },
     );
   }

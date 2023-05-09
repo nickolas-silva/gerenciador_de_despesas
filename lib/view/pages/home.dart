@@ -31,7 +31,7 @@ class _ViewHomeState extends State<ViewHome> {
     return DefaultTabController(
         length: listTabs.length,
         child: Scaffold(
-          drawer: const DrawerItens(),
+          drawer: DrawerItens(),
           appBar: AppBar(
             backgroundColor: roxoForte,
             elevation: 5,
