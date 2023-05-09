@@ -15,7 +15,7 @@ class ViewLogin extends StatefulWidget {
 
 class _ViewLoginState extends State<ViewLogin> {
   late TextEditingController textEditingControllerEmail, textEditingControllerPassword;
-
+  final formKey = GlobalKey<FormState>();
 
 
   @override
@@ -56,24 +56,38 @@ class _ViewLoginState extends State<ViewLogin> {
 
               const SizedBox(height: 32,),
 
-              WidgetTextFormField(
+              Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                WidgetTextFormField(
                 label: 'Email',
                 textEditingController: textEditingControllerEmail,
                 icon: Icons.email,
                 hint: 'Digite seu email',
-                validator: Validatorless.email("Digite um email válido!"),
+                validator: Validatorless.multiple([
+                  Validatorless.required('E-mail Obrigatório'),
+                  Validatorless.email('Email Inválido')
+                ]),
 
               ),
 
               const SizedBox(height: 40,),
 
-              WidgetTextFormField(
+                WidgetTextFormField(
                 label: 'Senha', 
                 textEditingController: textEditingControllerPassword,
                 icon: Icons.password,
                 hint: 'Digite sua senha',
-                validator: Validatorless.min(6, "Digite no minimo 6 caracteres"),
+                validator: Validatorless.multiple([
+                  Validatorless.required('Senha obrigatória'),
+                  Validatorless.min(6, 'Senha precisa ter pelo menos 6 caracteres')
+                ]),
               ),
+              ],
+                ),
+              ),
+              
 
               Align(
                 alignment: Alignment.centerRight,
@@ -100,7 +114,11 @@ class _ViewLoginState extends State<ViewLogin> {
                   
                 ),
                 onPressed: () {
+                  var formValid = formKey.currentState?.validate() ?? false;
+                  if(formValid){
                   Navigator.pushNamed(context, '/home');
+
+                  }
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

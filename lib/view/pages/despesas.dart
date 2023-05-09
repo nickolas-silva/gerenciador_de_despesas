@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:gd_app/models/despesa.dart';
 import 'package:gd_app/repositories/despesa_repository.dart';
 import 'package:gd_app/view/colors.dart';
+import 'package:gd_app/widgets/widgettext.dart';
 
 import '../../widgets/cardDespesa.dart';
 
@@ -42,12 +43,50 @@ class _TabDespesaState extends State<TabDespesa> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: branco,
+      backgroundColor: Colors.white10,
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const SizedBox(height: 30,),
+
+            Align(
+              alignment: Alignment.centerLeft,
+              child: WidgetText(
+                text: 'Despesa Mensal',
+                weight: FontWeight.w800,
+                size: 24,
+
+              )
+            ),
+
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+              margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
+              decoration: BoxDecoration(
+                color: Colors.white70,
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color.fromARGB(66, 0, 0, 0),
+                    spreadRadius: 1,
+                    blurRadius: 15
+
+                  )
+                ]
+              ),
+              child: WidgetText(
+                text: "R\$ 1000,00",
+                weight: FontWeight.w700,
+                size: 20,
+                color: Colors.green,
+               
+              ),
+            ),
+
+
+
             Row(
               children: [
                 Expanded(child: TextField(
