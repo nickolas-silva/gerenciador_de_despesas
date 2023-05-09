@@ -97,18 +97,18 @@ class _TabDespesaState extends State<TabDespesa> {
             ),
 
             SizedBox(height: 16,),
-            Flexible(
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  for(Despesa despesa in despesas)
-                    cardDespesa(
-                      despesa: despesa,
-                      onDelete: onDelete,
-                    )
-                ],
-              ),
-            )
+            // Flexible(
+            //   child: ListView(
+            //     shrinkWrap: true,
+            //     children: [
+            //       for(Despesa despesa in despesas)
+            //         cardDespesa(
+            //           despesa: despesa,
+            //           onDelete: onDelete,
+            //         )
+            //     ],
+            //   ),
+            // )
 
           ],
         ),
