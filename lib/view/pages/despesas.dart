@@ -7,6 +7,8 @@ import 'package:gd_app/models/despesa.dart';
 import 'package:gd_app/repositories/despesa_repository.dart';
 import 'package:gd_app/view/colors.dart';
 
+import '../../widgets/cardDespesa.dart';
+
 class TabDespesa extends StatefulWidget {
   const TabDespesa({super.key});
 
@@ -21,7 +23,7 @@ class _TabDespesaState extends State<TabDespesa> {
 
   List<Despesa> despesas = [];
   Despesa? deletedDespesa;
-  int? posicao;
+  int? deletedpos;
   String? errorMsg;
 
   @override
@@ -97,22 +99,85 @@ class _TabDespesaState extends State<TabDespesa> {
             ),
 
             SizedBox(height: 16,),
-            // Flexible(
-            //   child: ListView(
-            //     shrinkWrap: true,
-            //     children: [
-            //       for(Despesa despesa in despesas)
-            //         cardDespesa(
-            //           despesa: despesa,
-            //           onDelete: onDelete,
-            //         )
-            //     ],
-            //   ),
-            // )
+            Flexible(
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  for(Despesa despesa in despesas)
+                    cardDespesa(
+                      despesa: despesa,
+                      onDelete: onDelete,
+                    )
+                ],
+              ),
+            )
 
           ],
         ),
       ),
     );
+  }
+
+  void onDelete(Despesa despesa){
+    deletedDespesa = despesa;
+    deletedpos = despesas.indexOf(despesa);
+
+    setState(() {
+      despesas.remove(despesa);
+    });
+    despesaRepository.saveDespesaList(despesas);
+
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(
+        'Tarefa ${despesa.title} foi removida com sucesso!',
+        style: TextStyle(color: Color(0xff060708)),
+      ),
+      backgroundColor: Colors.white,
+      action: SnackBarAction(
+        label: 'Desfazer',
+        textColor: const Color(0xff00d7f3),
+        onPressed: () {
+          setState(() {
+            despesas.insert(deletedpos!, deletedDespesa!);
+          });
+          despesaRepository.saveDespesaList(despesas);
+        },
+      ),
+      duration: const Duration(seconds: 5),
+    ));
+
+  }
+
+  void showDeletedConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Limpar Tudo?'),
+        content: Text('Você tem certeza que deseja apagar todas as despesas?'),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: TextButton.styleFrom(primary: Color(0xff00d7f3)),
+              child: Text('Cancelar')),
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                deleteAll();
+              },
+              style: TextButton.styleFrom(primary: Colors.red),
+              child: Text('Limpar Tudo'))
+        ],
+      ),
+    );
+  }
+
+  void deleteAll(){
+    setState(() {
+      despesas.clear();
+    });
+    despesaRepository.saveDespesaList(despesas);
   }
 }
