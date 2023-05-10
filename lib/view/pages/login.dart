@@ -14,12 +14,12 @@ class ViewLogin extends StatefulWidget {
 }
 
 class _ViewLoginState extends State<ViewLogin> {
-  late TextEditingController textEditingControllerEmail, textEditingControllerPassword;
+  late TextEditingController textEditingControllerEmail,
+      textEditingControllerPassword;
   final formKey = GlobalKey<FormState>();
 
-
   @override
-  void initState(){
+  void initState() {
     textEditingControllerEmail = TextEditingController();
     textEditingControllerPassword = TextEditingController();
     textEditingControllerEmail.text = '';
@@ -37,8 +37,9 @@ class _ViewLoginState extends State<ViewLogin> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(height: 172,),
-              
+              const SizedBox(
+                height: 172,
+              ),
               WidgetText(
                 text: 'BEM VINDO(A)',
                 color: azul,
@@ -46,78 +47,74 @@ class _ViewLoginState extends State<ViewLogin> {
                 size: 24,
                 weight: FontWeight.w900,
               ),
-
-              const SizedBox(height: 35,),
-
-              Align(
-                alignment: Alignment.centerLeft,
-                child: WidgetText(text: 'Login', color: branco, size: 20, weight: FontWeight.w900,)
+              const SizedBox(
+                height: 35,
               ),
-
-              const SizedBox(height: 32,),
-
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: WidgetText(
+                    text: 'Login',
+                    color: branco,
+                    size: 20,
+                    weight: FontWeight.w900,
+                  )),
+              const SizedBox(
+                height: 32,
+              ),
               Form(
                 key: formKey,
                 child: Column(
                   children: [
-                WidgetTextFormField(
-                label: 'Email',
-                textEditingController: textEditingControllerEmail,
-                icon: Icons.email,
-                hint: 'Digite seu email',
-                validator: Validatorless.multiple([
-                  Validatorless.required('E-mail Obrigatório'),
-                  Validatorless.email('Email Inválido')
-                ]),
-
-              ),
-
-              const SizedBox(height: 40,),
-
-                WidgetTextFormField(
-                label: 'Senha', 
-                textEditingController: textEditingControllerPassword,
-                icon: Icons.password,
-                hint: 'Digite sua senha',
-                validator: Validatorless.multiple([
-                  Validatorless.required('Senha obrigatória'),
-                  Validatorless.min(6, 'Senha precisa ter pelo menos 6 caracteres')
-                ]),
-              ),
-              ],
+                    WidgetTextFormField(
+                      label: 'Email',
+                      textEditingController: textEditingControllerEmail,
+                      icon: Icons.email,
+                      hint: 'Digite seu email',
+                      validator: Validatorless.multiple([
+                        Validatorless.required('E-mail Obrigatório'),
+                        Validatorless.email('Email Inválido')
+                      ]),
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    WidgetTextFormField(
+                      label: 'Senha',
+                      textEditingController: textEditingControllerPassword,
+                      icon: Icons.password,
+                      hint: 'Digite sua senha',
+                      validator: Validatorless.multiple([
+                        Validatorless.required('Senha obrigatória'),
+                        Validatorless.min(
+                            6, 'Senha precisa ter pelo menos 6 caracteres')
+                      ]),
+                    ),
+                  ],
                 ),
               ),
-              
-
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  onPressed: () {},
-                  child: WidgetText(
-                    text: 'Esqueceu a Senha?',
-                    color: branco,
-                    size: 16,
-                    weight: FontWeight.w700,
-
-                  )
-                ),
+                    onPressed: () {},
+                    child: WidgetText(
+                      text: 'Esqueceu a Senha?',
+                      color: branco,
+                      size: 16,
+                      weight: FontWeight.w700,
+                    )),
               ),
-
-              const SizedBox(height: 20,),
-
+              const SizedBox(
+                height: 20,
+              ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: roxoClaro,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)
-                  )
-                  
-                ),
+                    backgroundColor: roxoClaro,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15))),
                 onPressed: () {
                   var formValid = formKey.currentState?.validate() ?? false;
-                  if(formValid){
-                  Navigator.pushNamed(context, '/home');
-
+                  if (formValid) {
+                    Navigator.pushNamed(context, '/home');
                   }
                 },
                 child: Row(
@@ -133,40 +130,32 @@ class _ViewLoginState extends State<ViewLogin> {
                   ],
                 ),
               ),
-
-              const SizedBox(height: 36,),
-
+              const SizedBox(
+                height: 36,
+              ),
               WidgetText(
                 text: 'Não tem uma conta?',
                 color: Colors.white,
                 size: 20,
                 weight: FontWeight.w700,
               ),
-
               TextButton(
-              onPressed: () {
-               //Rota tela de cadastro
-
-              },
-              child: Text(
-                'Registre-se',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                  fontFamily: 'Poppins',
-                  decoration: TextDecoration.underline,
-                  fontWeight: FontWeight.w700
-                ),
-              )
-            )
-
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/register');
+                  },
+                  child: Text(
+                    'Registre-se',
+                    style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontFamily: 'Poppins',
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.w700),
+                  ))
             ],
           ),
-          
         ),
-        
       ),
-      
     );
   }
 }
