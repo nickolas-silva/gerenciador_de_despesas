@@ -53,6 +53,16 @@ Future<User> getUser(String id) async {
   }
 }
 
+Future<http.Response> createUser(User user) async {
+  return await http.post(
+    Uri.parse("http://192.168.0.14:3333/user"),
+    headers: <String, String>{
+      'Content-type': 'application/json; charset=UTF-8'
+    },
+    body: jsonEncode(<User>{user}),
+  );
+}
+
 // Future<Login> login(String username, String password) async {
 //   final response = await http.post()
 // }

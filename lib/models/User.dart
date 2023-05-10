@@ -2,13 +2,17 @@ class User {
   final int id;
   final String name;
   final String email;
-  // final String wage;
+  final String password;
+  final String wage;
+  final DateTime createdAt = DateTime.now();
 
-  const User({
+  User({
     required this.id,
     required this.name,
     required this.email,
-    // required this.wage,
+    required this.wage,
+    required this.password,
+    required createdAt,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -16,7 +20,9 @@ class User {
       id: json['id'],
       name: json['name'],
       email: json['email'],
-      // wage: json['wage'],
+      password: json['password'],
+      wage: json['wage'],
+      createdAt: json['createdAt'],
     );
   }
 }
