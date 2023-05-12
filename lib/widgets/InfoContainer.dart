@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:gd_app/models/Payment.dart';
+import 'package:gd_app/models/User.dart';
 import 'package:intl/intl.dart';
 
 class InfoContainer extends StatefulWidget {
-  const InfoContainer({super.key});
+  const InfoContainer({Key? key, required this.payment}) : super(key: key);
+
+  final Payment payment;
 
   @override
   State<StatefulWidget> createState() {
@@ -44,8 +48,8 @@ class _InfoWidgetState extends State<InfoContainer> {
             textAlign: TextAlign.start,
           ),
           const SizedBox(height: 12),
-          const Text(
-            "Meta - R\$(Valor vindo da api)",
+          Text(
+            "Meta - R\$${widget.payment.userReceived}",
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
@@ -53,8 +57,8 @@ class _InfoWidgetState extends State<InfoContainer> {
             textAlign: TextAlign.start,
           ),
           const SizedBox(height: 8),
-          const Text(
-            "Gasto - R\$(Valor vindo da api)",
+          Text(
+            "Gasto - R\$${widget.payment.debtValue}",
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,

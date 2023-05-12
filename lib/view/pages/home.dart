@@ -1,14 +1,22 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:gd_app/models/Payment.dart';
+import 'package:gd_app/utils/api.dart';
 import 'package:gd_app/view/colors.dart';
 import 'package:gd_app/view/drawer.dart';
 import 'package:gd_app/view/pages/despesas.dart';
 import 'package:gd_app/view/pages/resumo.dart';
 import 'package:gd_app/widgets/widgettext.dart';
 
+import '../../models/User.dart';
+
 class ViewHome extends StatefulWidget {
-  const ViewHome({super.key});
+  const ViewHome({Key? key, required this.user}) : super(key: key);
+
+  final User user;
 
   @override
   State<ViewHome> createState() => _ViewHomeState();
@@ -51,7 +59,12 @@ class _ViewHomeState extends State<ViewHome> {
             ),
           ),
           body: TabBarView(
-            children: [TabResumo(), TabDespesa()],
+            children: [
+              TabResumo(
+                user: widget.user,
+              ),
+              TabDespesa()
+            ],
           ),
         ));
   }

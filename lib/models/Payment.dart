@@ -2,26 +2,26 @@ import 'package:flutter/foundation.dart';
 
 class Payment {
   final int id;
-  final int user_id;
-  final double userDebt;
-  final double debtValue;
-  final DateTime date;
+  final int userId;
+  final String userReceived;
+  final String debtValue;
+  final String date;
   final bool paid;
 
   Payment({
     required this.id,
-    required this.user_id,
-    required this.userDebt,
+    required this.userId,
+    required this.userReceived,
     required this.debtValue,
     required this.date,
     required this.paid,
   });
 
-  factory Payment.toJson(Map<String, dynamic> json) {
+  factory Payment.fromJson(Map<String, dynamic> json) {
     return Payment(
       id: json['id'],
-      user_id: json['user_id'],
-      userDebt: json['userDebt'],
+      userId: json['userId'],
+      userReceived: json['userReceived'],
       debtValue: json['debtValue'],
       date: json['date'],
       paid: json['paid'],
