@@ -18,7 +18,6 @@ class TabDespesa extends StatefulWidget {
 }
 
 class _TabDespesaState extends State<TabDespesa> {
-
   final TextEditingController despesaController = TextEditingController();
   final DespesaRepository despesaRepository = DespesaRepository();
 
@@ -28,17 +27,15 @@ class _TabDespesaState extends State<TabDespesa> {
   String? errorMsg;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
 
     despesaRepository.getDespesaList().then((value) {
       setState(() {
-        despesas = value;
+        despesas = value.cast<Despesa>();
       });
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -49,86 +46,71 @@ class _TabDespesaState extends State<TabDespesa> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(height: 30,),
-
-            Align(
-              alignment: Alignment.centerLeft,
-              child: WidgetText(
-                text: 'Despesa Mensal',
-                weight: FontWeight.w800,
-                size: 24,
-
-              )
+            const SizedBox(
+              height: 30,
             ),
-
+            Align(
+                alignment: Alignment.centerLeft,
+                child: WidgetText(
+                  text: 'Despesa Mensal',
+                  weight: FontWeight.w800,
+                  size: 24,
+                )),
             Container(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
               margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
               decoration: BoxDecoration(
-                color: Colors.white70,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: Color.fromARGB(66, 0, 0, 0),
-                    spreadRadius: 1,
-                    blurRadius: 15
-
-                  )
-                ]
-              ),
+                  color: Colors.white70,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Color.fromARGB(66, 0, 0, 0),
+                        spreadRadius: 1,
+                        blurRadius: 15)
+                  ]),
               child: WidgetText(
                 text: "R\$ 1000,00",
                 weight: FontWeight.w700,
                 size: 20,
                 color: Colors.green,
-               
               ),
             ),
-
-
-
             Row(
               children: [
-                Expanded(child: TextField(
+                Expanded(
+                    child: TextField(
                   controller: despesaController,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Digite o titulo da despesa",
-                    errorText: errorMsg,
-                    labelStyle: TextStyle(color: roxoClaro)
-                  ),
-                  
+                      border: OutlineInputBorder(),
+                      labelText: "Digite o titulo da despesa",
+                      errorText: errorMsg,
+                      labelStyle: TextStyle(color: roxoClaro)),
                 )),
-
-                SizedBox(width: 8,),
-
+                SizedBox(
+                  width: 8,
+                ),
                 ElevatedButton(
                   onPressed: () {
                     String text = despesaController.text;
 
-                    if(text.isEmpty){
+                    if (text.isEmpty) {
                       setState(() {
                         errorMsg = 'O titulo não pode ser vazio';
-
                       });
                       return;
                     }
                     setState(() {
                       Despesa newDespesa = Despesa(
-                        title: text,
-                        date: DateTime.now(),
-                        valor: 100  //teste
-                      );
+                          title: text, date: DateTime.now(), valor: 100 //teste
+                          );
                       despesas.add(newDespesa);
                       errorMsg = null;
                     });
                     despesaController.clear();
                     despesaRepository.saveDespesaList(despesas);
-                  }, 
+                  },
                   style: ElevatedButton.styleFrom(
-                    primary: roxoForte,
-                    padding: EdgeInsets.all(14)
-                  ),
+                      primary: roxoForte, padding: EdgeInsets.all(14)),
                   child: Icon(
                     Icons.add,
                     size: 30,
@@ -136,13 +118,14 @@ class _TabDespesaState extends State<TabDespesa> {
                 )
               ],
             ),
-
-            SizedBox(height: 16,),
+            SizedBox(
+              height: 16,
+            ),
             Flexible(
               child: ListView(
                 shrinkWrap: true,
                 children: [
-                  for(Despesa despesa in despesas)
+                  for (Despesa despesa in despesas)
                     cardDespesa(
                       despesa: despesa,
                       onDelete: onDelete,
@@ -150,14 +133,13 @@ class _TabDespesaState extends State<TabDespesa> {
                 ],
               ),
             )
-
           ],
         ),
       ),
     );
   }
 
-  void onDelete(Despesa despesa){
+  void onDelete(Despesa despesa) {
     deletedDespesa = despesa;
     deletedpos = despesas.indexOf(despesa);
 
@@ -185,7 +167,6 @@ class _TabDespesaState extends State<TabDespesa> {
       ),
       duration: const Duration(seconds: 5),
     ));
-
   }
 
   void showDeletedConfirmationDialog() {
@@ -213,7 +194,7 @@ class _TabDespesaState extends State<TabDespesa> {
     );
   }
 
-  void deleteAll(){
+  void deleteAll() {
     setState(() {
       despesas.clear();
     });
