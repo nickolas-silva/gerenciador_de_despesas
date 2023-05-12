@@ -35,8 +35,9 @@ class _ViewHomeState extends State<ViewHome> {
           appBar: AppBar(
             backgroundColor: roxoForte,
             elevation: 5,
+            //title: const Text('Home', style: TextStyle( color: roxoClaro, fontSize: 20, fontWeight: FontWeight.w900),),
             title: WidgetText(
-              text: 'HOME',
+              text: 'GD_app',
               color: roxoClaro,
               size: 20,
               weight: FontWeight.w900,

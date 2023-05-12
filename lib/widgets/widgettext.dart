@@ -48,7 +48,7 @@ class _WidgetTextState extends State<WidgetText> {
                 fontSize: widget.size,
                 color: widget.color,
                 fontWeight: widget.weight,
-                fontFamily: 'JetBrains Mono',
+                fontFamily: 'Poppins',
                 height: widget.height,
                 wordSpacing: 0,
                 letterSpacing: 0),
