@@ -3,12 +3,12 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:gd_app/view/colors.dart';
 import 'package:intl/intl.dart';
 import '../models/despesa.dart';
 
 class cardDespesa extends StatelessWidget {
   const cardDespesa({super.key, required this.despesa, required this.onDelete});
-
 
 
   final Despesa despesa;
@@ -33,10 +33,11 @@ class cardDespesa extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
-            color: Colors.grey
+            color: branco
           ),
           padding: EdgeInsets.all(16),
           child: Column(
+            
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(DateFormat('dd/MMM/yy - HH:mm').format(despesa.date),
@@ -44,7 +45,12 @@ class cardDespesa extends StatelessWidget {
                 fontSize: 12
                 ),
               ),
-              Text(despesa.title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),)
+
+              Padding(
+                padding: const EdgeInsets.only(top: 8, bottom: 8),
+                child: Text('Titulo: ${despesa.title}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),),
+              ),
+              Text('Valor: ${despesa.valor} R\$', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),)
             ],
           ),
         ),

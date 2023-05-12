@@ -8,7 +8,7 @@ class Despesa{
 
   String title;
   DateTime date;
-  double valor;
+  String valor;
 
   Map<String, dynamic> toJson(){
     return{

@@ -67,6 +67,7 @@ class _ViewLoginState extends State<ViewLogin> {
                   children: [
                     WidgetTextFormField(
                       label: 'Email',
+                      color: Colors.white,
                       textEditingController: textEditingControllerEmail,
                       icon: Icons.email,
                       hint: 'Digite seu email',
@@ -80,6 +81,8 @@ class _ViewLoginState extends State<ViewLogin> {
                     ),
                     WidgetTextFormField(
                       label: 'Senha',
+                      color: Colors.white,
+                      obscure: true,
                       textEditingController: textEditingControllerPassword,
                       icon: Icons.password,
                       hint: 'Digite sua senha',
