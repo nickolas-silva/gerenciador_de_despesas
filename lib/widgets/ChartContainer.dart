@@ -41,11 +41,12 @@ class _ChartContainer extends State<ChartContainer> {
               data: [
                 {
                   'domain': 'Meta de gastos',
-                  'measure': int.parse(widget.payment.userReceived)
+                  'measure': double.parse(widget.payment.userReceived) -
+                      double.parse(widget.payment.debtValue),
                 },
                 {
                   'domain': 'Gasto atual',
-                  'measure': int.parse(widget.payment.debtValue),
+                  'measure': double.parse(widget.payment.debtValue),
                 },
               ],
               fillColor: (pieData, index) {

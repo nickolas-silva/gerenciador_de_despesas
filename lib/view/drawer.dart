@@ -8,6 +8,10 @@ import 'package:gd_app/view/colors.dart';
 import 'package:gd_app/widgets/widgettext.dart';
 
 class DrawerItens extends StatefulWidget {
+  const DrawerItens({Key? key, required this.user}) : super(key: key);
+
+  final User user;
+
   State<StatefulWidget> createState() {
     return _DrawerItens();
   }
@@ -19,7 +23,7 @@ class _DrawerItens extends State<DrawerItens> {
   @override
   void initState() {
     super.initState();
-    _user = getUser('1');
+    _user = getUser(widget.user.id!);
   }
 
   @override

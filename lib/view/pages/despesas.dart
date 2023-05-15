@@ -3,15 +3,22 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:gd_app/models/Debt.dart';
+import 'package:gd_app/models/Payment.dart';
+import 'package:gd_app/models/User.dart';
 import 'package:gd_app/models/despesa.dart';
 import 'package:gd_app/repositories/despesa_repository.dart';
+import 'package:gd_app/utils/api.dart';
 import 'package:gd_app/view/colors.dart';
+import 'package:gd_app/widgets/widgetformfield.dart';
 import 'package:gd_app/widgets/widgettext.dart';
 
 import '../../widgets/cardDespesa.dart';
 
 class TabDespesa extends StatefulWidget {
-  const TabDespesa({super.key});
+  const TabDespesa({Key? key, required this.user}) : super(key: key);
+
+  final User user;
 
   @override
   State<TabDespesa> createState() => _TabDespesaState();
@@ -19,6 +26,7 @@ class TabDespesa extends StatefulWidget {
 
 class _TabDespesaState extends State<TabDespesa> {
   final TextEditingController despesaController = TextEditingController();
+  final TextEditingController valorController = TextEditingController();
   final DespesaRepository despesaRepository = DespesaRepository();
 
   List<Despesa> despesas = [];
@@ -26,114 +34,316 @@ class _TabDespesaState extends State<TabDespesa> {
   int? deletedpos;
   String? errorMsg;
 
+  late Future<Payment> payment;
+  late Future<List<Debt>> debts;
+
   @override
   void initState() {
     super.initState();
 
-    despesaRepository.getDespesaList().then((value) {
-      setState(() {
-        despesas = value.cast<Despesa>();
-      });
-    });
+    payment = userPayment(widget.user.id!);
+    debts = getDebtsByPaymentId(1);
+
+    // id = userPayment(widget.user.id!).then((value) => value.id) as int;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white10,
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(
-              height: 30,
-            ),
-            Align(
-                alignment: Alignment.centerLeft,
-                child: WidgetText(
-                  text: 'Despesa Mensal',
-                  weight: FontWeight.w800,
-                  size: 24,
-                )),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-              margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
-              decoration: BoxDecoration(
-                  color: Colors.white70,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Color.fromARGB(66, 0, 0, 0),
-                        spreadRadius: 1,
-                        blurRadius: 15)
-                  ]),
-              child: WidgetText(
-                text: "R\$ 1000,00",
-                weight: FontWeight.w700,
-                size: 20,
-                color: Colors.green,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(
+                height: 30,
               ),
-            ),
-            Row(
-              children: [
-                Expanded(
-                    child: TextField(
-                  controller: despesaController,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Digite o titulo da despesa",
-                      errorText: errorMsg,
-                      labelStyle: TextStyle(color: roxoClaro)),
-                )),
-                SizedBox(
-                  width: 8,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    String text = despesaController.text;
-
-                    if (text.isEmpty) {
-                      setState(() {
-                        errorMsg = 'O titulo não pode ser vazio';
-                      });
-                      return;
-                    }
-                    setState(() {
-                      Despesa newDespesa = Despesa(
-                          title: text, date: DateTime.now(), valor: 100 //teste
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: WidgetText(
+                    text: 'Despesa Mensal',
+                    weight: FontWeight.w800,
+                    size: 24,
+                  )),
+              Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
+                  decoration: BoxDecoration(
+                      color: Colors.white70,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Color.fromARGB(66, 0, 0, 0),
+                            spreadRadius: 1,
+                            blurRadius: 15)
+                      ]),
+                  child: FutureBuilder(
+                      future: payment,
+                      builder: ((context, snapshot) {
+                        if (snapshot.hasData) {
+                          return WidgetText(
+                            text: "R\$ ${snapshot.data?.debtValue}",
+                            weight: FontWeight.w700,
+                            size: 20,
+                            color: Colors.green,
+                            align: TextAlign.center,
                           );
-                      despesas.add(newDespesa);
-                      errorMsg = null;
-                    });
-                    despesaController.clear();
-                    despesaRepository.saveDespesaList(despesas);
-                  },
-                  style: ElevatedButton.styleFrom(
-                      primary: roxoForte, padding: EdgeInsets.all(14)),
-                  child: Icon(
-                    Icons.add,
-                    size: 30,
-                  ),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Flexible(
-              child: ListView(
-                shrinkWrap: true,
+                        } else if (snapshot.hasError) {
+                          return Text(snapshot.error.toString());
+                        } else {
+                          return WidgetText(
+                            text: "R\$0",
+                            weight: FontWeight.w700,
+                            size: 20,
+                            color: Colors.green,
+                            align: TextAlign.center,
+                          );
+                        }
+                      }))),
+              const SizedBox(
+                height: 30,
+              ),
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: WidgetText(
+                    text: 'Despesas',
+                    weight: FontWeight.w800,
+                    size: 24,
+                  )),
+              const SizedBox(
+                height: 8,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
                 children: [
-                  for (Despesa despesa in despesas)
-                    cardDespesa(
-                      despesa: despesa,
-                      onDelete: onDelete,
-                    )
+                  Expanded(
+                    flex: 1,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          // String text = despesaController.text;
+
+                          // if(text.isEmpty){
+                          //   setState(() {
+                          //     errorMsg = 'O titulo não pode ser vazio';
+
+                          //   });
+                          //   return;
+                          // }
+                          // setState(() {
+                          //   Despesa newDespesa = Despesa(
+                          //     title: text,
+                          //     date: DateTime.now(),
+                          //     valor: 100  //teste
+                          //   );
+                          //   despesas.add(newDespesa);
+                          //   errorMsg = null;
+                          // });
+                          // despesaController.clear();
+                          // despesaRepository.saveDespesaList(despesas);
+                          showDialog(
+                              context: context,
+                              builder: (context) => Wrap(children: [
+                                    AlertDialog(
+                                      backgroundColor: roxoForte,
+                                      title: const Text(
+                                        'Cadastrar Nova Despesa',
+                                        style: TextStyle(
+                                          color: azul,
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      content: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          TextField(
+                                            controller: despesaController,
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                            decoration: InputDecoration(
+                                              border:
+                                                  const OutlineInputBorder(),
+                                              labelText: "Titulo da Despesa",
+                                              errorText: errorMsg,
+                                              labelStyle: const TextStyle(
+                                                  color: azul,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600),
+                                              fillColor: roxoMedio,
+                                              filled: true,
+                                              prefixIcon: const Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 0, right: 0),
+                                                child: Icon(
+                                                  Icons.title,
+                                                  color: azul,
+                                                  size: 20,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          TextField(
+                                            controller: valorController,
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                            decoration: InputDecoration(
+                                              border:
+                                                  const OutlineInputBorder(),
+                                              labelText: "Valor da Despesa",
+                                              errorText: errorMsg,
+                                              labelStyle: const TextStyle(
+                                                  color: azul,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600),
+                                              fillColor: roxoMedio,
+                                              filled: true,
+                                              prefixIcon: const Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 0, right: 0),
+                                                child: Icon(
+                                                  Icons.monetization_on_rounded,
+                                                  color: azul,
+                                                  size: 20,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      actions: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            TextButton(
+                                                style: TextButton.styleFrom(
+                                                    backgroundColor: roxoMedio),
+                                                onPressed: (() {
+                                                  String text =
+                                                      despesaController.text;
+                                                  String valor =
+                                                      valorController.text;
+
+                                                  if (text.isEmpty ||
+                                                      valor.isEmpty) {
+                                                    setState(() {
+                                                      errorMsg =
+                                                          'Os campos não podem ser vazios!';
+                                                    });
+                                                    return;
+                                                  }
+
+                                                  setState(() {
+                                                    Debt newDebt = Debt(
+                                                      userId: widget.user.id!,
+                                                      date: DateTime.now(),
+                                                      description: text,
+                                                      value: valor,
+                                                    );
+
+                                                    createDebt(newDebt);
+
+                                                    debts =
+                                                        getDebtsByPaymentId(1);
+
+                                                    // Despesa newDespesa =
+                                                    //     Despesa(
+                                                    //         title: text,
+                                                    //         date:
+                                                    //             DateTime.now(),
+                                                    //         valor: valor);
+                                                    // despesas.add(newDespesa);
+                                                    // errorMsg = null;
+                                                  });
+
+                                                  despesaController.clear();
+                                                  valorController.clear();
+                                                  // despesaRepository
+                                                  //     .saveDespesaList(
+                                                  //         despesas);
+                                                  Navigator.pop(context);
+                                                }),
+                                                child: WidgetText(
+                                                  text: 'Cadastrar',
+                                                  color: Colors.white,
+                                                  weight: FontWeight.w900,
+                                                )),
+                                            SizedBox(
+                                              width: 40,
+                                            ),
+                                            TextButton(
+                                                style: TextButton.styleFrom(
+                                                    backgroundColor: branco),
+                                                onPressed: () {
+                                                  despesaController.clear();
+                                                  valorController.clear();
+                                                  Navigator.pop(context);
+                                                },
+                                                child: WidgetText(
+                                                  text: 'Cancelar',
+                                                  weight: FontWeight.w700,
+                                                ))
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ]));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: roxoForte,
+                          padding: EdgeInsets.all(14),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                        ),
+                        child: Text(
+                          'Cadastrar',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins',
+                          ),
+                        )),
+                  ),
                 ],
               ),
-            )
-          ],
+              SizedBox(
+                height: 16,
+              ),
+              Flexible(
+                child: FutureBuilder(
+                  future: debts,
+                  initialData: [],
+                  builder: ((context, snapshot) {
+                    if (snapshot.hasData) {
+                      return SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            for (Debt debt in snapshot.data!.reversed.toList())
+                              cardDespesa(
+                                debt: debt,
+                              )
+                          ],
+                        ),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text(snapshot.error.toString());
+                    } else {
+                      return const SizedBox();
+                    }
+                  }),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

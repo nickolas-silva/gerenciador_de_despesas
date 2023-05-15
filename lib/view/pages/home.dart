@@ -39,7 +39,9 @@ class _ViewHomeState extends State<ViewHome> {
     return DefaultTabController(
         length: listTabs.length,
         child: Scaffold(
-          drawer: DrawerItens(),
+          drawer: DrawerItens(
+            user: widget.user,
+          ),
           appBar: AppBar(
             backgroundColor: roxoForte,
             elevation: 5,
@@ -63,7 +65,9 @@ class _ViewHomeState extends State<ViewHome> {
               TabResumo(
                 user: widget.user,
               ),
-              TabDespesa()
+              TabDespesa(
+                user: widget.user,
+              )
             ],
           ),
         ));

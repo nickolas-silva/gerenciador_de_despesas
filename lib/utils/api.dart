@@ -28,21 +28,23 @@ class Login {
   }
 }
 
-Future<List<Debt>?> fetchDebt(String id) async {
+Future<List<Debt>> getDebtsByPaymentId(int? id) async {
   try {
-    final response =
-        await http.get(Uri.parse("http://localhost:3333/debt-by-user/$id"));
+    final response = await http.get(Uri.parse("$url/debts/payment/$id"));
 
     if (response.statusCode == 200) {
-      List<Debt> debt = Debt.fromJson(jsonDecode(response.body)) as List<Debt>;
-      return debt;
+      var debts = jsonDecode(response.body).cast<Map<String, dynamic>>();
+
+      return debts.map<Debt>((json) => Debt.fromJson(json)).toList();
+    } else {
+      throw Exception(response.body);
     }
   } catch (e) {
     throw Exception(e.toString());
   }
 }
 
-Future<User> getUser(String id) async {
+Future<User> getUser(int id) async {
   var parsedUrl = Uri.parse("$url/user/$id");
   // final response =
   //     await http.get(Uri.parse("http://192.168.0.15:3333/user/$id"));
@@ -100,8 +102,43 @@ Future<Payment> userPayment(int id) async {
   var response = await http.get(parsedUrl);
 
   if (response.statusCode == 200) {
-    return Payment.fromJson(jsonDecode(response.body));
+    if (response.body.length > 4) {
+      return Payment.fromJson(jsonDecode(response.body));
+    } else {
+      return Payment(
+          id: 1,
+          userId: 0,
+          userReceived: "0",
+          debtValue: "0",
+          date: DateTime.now().toString(),
+          paid: true);
+    }
   } else {
-    throw new Exception("An error occoured");
+    throw Exception(response.body);
+  }
+}
+
+Future<http.Response> createDebt(Debt debt) async {
+  try {
+    var response = await http.post(
+      Uri.parse("$url/debt"),
+      headers: <String, String>{
+        'Content-type': 'application/json; charset=UTF-8'
+      },
+      body: jsonEncode(<String, dynamic>{
+        'value': double.parse(debt.value),
+        'description': debt.description,
+        'startAt': DateTime.now().toString(),
+        'userId': debt.userId
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return response;
+    } else {
+      throw Exception(response.body.toString());
+    }
+  } catch (e) {
+    throw Exception(e.toString());
   }
 }
