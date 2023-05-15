@@ -1,10 +1,13 @@
 import 'package:d_chart/d_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:gd_app/models/Payment.dart';
 import 'package:gd_app/view/colors.dart';
 
 class ChartContainer extends StatefulWidget {
-  const ChartContainer({super.key});
+  const ChartContainer({Key? key, required this.payment}) : super(key: key);
+
+  final Payment payment;
 
   @override
   State<StatefulWidget> createState() => _ChartContainer();
@@ -35,9 +38,16 @@ class _ChartContainer extends State<ChartContainer> {
           AspectRatio(
             aspectRatio: 16 / 9,
             child: DChartPie(
-              data: const [
-                {'domain': 'Meta de gastos', 'measure': 700},
-                {'domain': 'Gasto atual', 'measure': 1050},
+              data: [
+                {
+                  'domain': 'Meta de gastos',
+                  'measure': double.parse(widget.payment.userReceived) -
+                      double.parse(widget.payment.debtValue),
+                },
+                {
+                  'domain': 'Gasto atual',
+                  'measure': double.parse(widget.payment.debtValue),
+                },
               ],
               fillColor: (pieData, index) {
                 switch (pieData['domain']) {

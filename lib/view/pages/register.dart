@@ -3,10 +3,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:gd_app/models/dto/UserDTO.dart';
+import 'package:gd_app/utils/api.dart';
 import 'package:gd_app/view/colors.dart';
 import 'package:gd_app/widgets/widgetformfield.dart';
 import 'package:gd_app/widgets/widgettext.dart';
 import 'package:validatorless/validatorless.dart';
+
+import '../../models/User.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -40,16 +44,13 @@ class _RegisterState extends State<Register> {
             child: Column(
               children: [
                 Align(
-                  alignment: Alignment.centerLeft,
-                  
-                  child: WidgetText(
-                    text: 'Nome',
-                    size: 16,
-                    weight: FontWeight.w600,
-                    color: azul,
-
-                  )
-                ),
+                    alignment: Alignment.centerLeft,
+                    child: WidgetText(
+                      text: 'Nome',
+                      size: 16,
+                      weight: FontWeight.w600,
+                      color: azul,
+                    )),
                 WidgetTextFormField(
                   label: "nome",
                   textEditingController: nameController,
@@ -61,9 +62,9 @@ class _RegisterState extends State<Register> {
                     Validatorless.max(100, "Nome muito grande"),
                   ]),
                 ),
-
-                const SizedBox(height: 15,),
-
+                const SizedBox(
+                  height: 15,
+                ),
                 Align(
                     alignment: Alignment.centerLeft,
                     child: WidgetText(
@@ -84,11 +85,9 @@ class _RegisterState extends State<Register> {
                     Validatorless.email("Email em formato incorreto!")
                   ]),
                 ),
-
                 const SizedBox(
                   height: 15,
                 ),
-
                 Align(
                     alignment: Alignment.centerLeft,
                     child: WidgetText(
@@ -108,15 +107,13 @@ class _RegisterState extends State<Register> {
                     Validatorless.required("Nome obrigatório!"),
                     Validatorless.max(100, "Nome muito grande"),
                     Validatorless.min(6, "Senha muit curta"),
-                    Validatorless.compare(
-                        passwordConfirmController, "As Senhas preciam ser iguais")
+                    Validatorless.compare(passwordConfirmController,
+                        "As Senhas preciam ser iguais")
                   ]),
                 ),
-
                 const SizedBox(
                   height: 15,
                 ),
-
                 Align(
                     alignment: Alignment.centerLeft,
                     child: WidgetText(
@@ -144,9 +141,22 @@ class _RegisterState extends State<Register> {
                   height: 24,
                 ),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     final validation = key.currentState?.validate() ?? false;
-                    if (validation) Navigator.pop(context);
+                    if (validation) {
+                      UserDTO user = UserDTO(
+                        email: emailController.text,
+                        name: nameController.text,
+                        password: passwordController.text,
+                        wage: 400,
+                      );
+                      var response = await createUser(user);
+                      if (response.statusCode == 200) {
+                        Navigator.pop(context);
+                      } else {
+                        throw Exception(response.body);
+                      }
+                    }
                   },
                   // Cadastrar
                   child: const Text(

@@ -1,9 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:gd_app/models/User.dart';
+import 'package:gd_app/utils/api.dart';
 import 'package:gd_app/view/colors.dart';
+import 'package:gd_app/view/pages/home.dart';
 import 'package:gd_app/widgets/widgetformfield.dart';
 import 'package:gd_app/widgets/widgettext.dart';
+import 'package:http/src/response.dart';
 import 'package:validatorless/validatorless.dart';
 
 class ViewLogin extends StatefulWidget {
@@ -114,10 +120,25 @@ class _ViewLoginState extends State<ViewLogin> {
                     backgroundColor: roxoClaro,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15))),
-                onPressed: () {
+                onPressed: () async {
                   var formValid = formKey.currentState?.validate() ?? false;
                   if (formValid) {
-                    Navigator.pushNamed(context, '/home');
+                    try {
+                      var response = await userLogin(
+                          textEditingControllerEmail.text,
+                          textEditingControllerPassword.text);
+
+                      if (response.statusCode == 200) {
+                        var body = jsonDecode(response.body);
+                        var user = User.fromJson(body);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ViewHome(user: user)));
+                      }
+                    } catch (error) {
+                      throw Exception(error.toString());
+                    }
                   }
                 },
                 child: Row(
